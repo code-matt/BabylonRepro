@@ -9,7 +9,7 @@ export function initBabylon (canvasId) {
     engine = new Engine(canvas);
     scene = new Scene(engine, {});
     scene.createDefaultSkybox()
-    camera = new UniversalCamera("WVR", new Vector3(0, 4, -10), scene);
+    camera = new UniversalCamera("WVR", new Vector3(0, 2, -20), scene);
     
     camera.attachControl(document.getElementById(canvasId), true)
 
@@ -17,7 +17,9 @@ export function initBabylon (canvasId) {
         engine.resize();
     });
 
-    return { canvas, engine, scene, camera }
+    let box = Mesh.CreateBox("box", 2, scene, true)
+
+    return { canvas, engine, scene, camera, box }
 }
 
 export function render ({ scene }) {
@@ -38,7 +40,6 @@ export function addGround ({ scene }) {
     ground.material = groundMaterial;
 }
 
-export function makeAndAnimateCube ({ scene }) {
-    var box = Mesh.CreateBox("box", 2, scene, true)
-    Animation.CreateAndStartAnimation("boxmove", box, "position", 30, 30, box.position, new Vector3(0, 2, 0), Animation.ANIMATIONLOOPMODE_RELATIVE)
+export function animateBox ({ box }) {
+    Animation.CreateAndStartAnimation("boxmove", box, "position", 30, 30, new Vector3(0, 0, 0), new Vector3(0, 2, 0), Animation.ANIMATIONLOOPMODE_RELATIVE)
 }

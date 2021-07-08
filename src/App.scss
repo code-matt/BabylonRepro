@@ -10,13 +10,30 @@ body {
 
 #canvaselement {
   width: 50vw;
-  height: 100vw;
+  height: 100vh;
   z-index: 2;
   display: inline-block;
 }
 #canvaselement2 {
   width: 50vw;
-  height: 100vw;
+  height: 100vh;
   z-index: 2;
   display: inline-block;
+}
+
+.buttons-container {
+  position: absolute;
+  top: 10;
+  left: 10;
+  z-index: 3;
+  
+  .button {
+    background: 'black';
+    padding: 20px 5px;
+    color: white;
+    &:hover {
+      cursor: pointer;
+      border: 1px solid white;
+    }
+  }
 }
