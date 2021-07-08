@@ -41,5 +41,8 @@ export function addGround ({ scene }) {
 }
 
 export function animateBox ({ box }) {
-    Animation.CreateAndStartAnimation("boxmove", box, "position", 30, 30, new Vector3(0, 0, 0), new Vector3(0, 2, 0), Animation.ANIMATIONLOOPMODE_RELATIVE)
+    let animateable = Animation.CreateAndStartAnimation("boxmove", box, "position", 30, 30, box.position, new Vector3(0, 3 * Math.random(), 0), Animation.ANIMATIONLOOPMODE_RELATIVE)
+    let animateable2 = Animation.CreateAndStartAnimation("boxrotate", box, "rotation", 30, 30, box.rotation, new Vector3(0, 5 * Math.random(), 0), Animation.ANIMATIONLOOPMODE_RELATIVE)
+    console.log(animateable)
+    console.log(animateable2)
 }

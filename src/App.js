@@ -13,13 +13,14 @@ class App extends Component {
     document.getElementById('canvaselement').focus()
 
     this.scene2stuff = initBabylon('canvaselement2')
-    this.scene2stuff.camera.attachControl(document.getElementById('canvaselement2'), true)
 
     this.scene1stuff.engine.runRenderLoop(render(this.scene1stuff))
     this.scene2stuff.engine.runRenderLoop(render(this.scene2stuff))
 
     addGround(this.scene1stuff)
     addGround(this.scene2stuff)
+    animateBox(this.scene1stuff)
+    animateBox(this.scene2stuff)
   }
 
   runAnimation = (key) => {
