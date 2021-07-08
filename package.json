@@ -11,6 +11,12 @@
     "react-scripts": "4.0.3",
     "web-vitals": "^1.1.2"
   },
+  "devDependencies": {
+    "@babylonjs/core": "5.0.0-alpha.31",
+    "@babylonjs/inspector": "5.0.0-alpha.31",
+    "@babylonjs/loaders": "5.0.0-alpha.31",
+    "node-sass": "^6.0.1"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
