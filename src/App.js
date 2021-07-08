@@ -1,19 +1,26 @@
 import './App.scss';
 
 import {
-  addGround,
-  camera, initBabylon, makeAndAnimateCube
+  addGround, initBabylon, makeAndAnimateCube, render
 } from './Babylon'
 
 import React, { Component } from 'react';
 class App extends Component {
 
   componentDidMount() {
-    initBabylon()
-    camera.attachControl(document.getElementById('canvaselement'), true)
+    let scene1stuff = initBabylon('canvaselement')
+    scene1stuff.camera.attachControl(document.getElementById('canvaselement'), true)
     document.getElementById('canvaselement').focus()
-    addGround()
-    makeAndAnimateCube()
+
+    let scene2stuff = initBabylon('canvaselement2')
+    scene2stuff.camera.attachControl(document.getElementById('canvaselement2'), true)
+
+    scene1stuff.engine.runRenderLoop(render(scene1stuff))
+    scene2stuff.engine.runRenderLoop(render(scene2stuff))
+
+    addGround(scene1stuff)
+    addGround(scene2stuff)
+    makeAndAnimateCube(scene1stuff)
   }
 
   render() {

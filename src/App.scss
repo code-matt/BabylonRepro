@@ -1,14 +1,22 @@
 body {
   margin: 0;
   padding: 0;
+  display: flex;
 }
 
 .App {
 
 }
 
-canvas {
-  width: 100vw;
-  height: 100vh;
+#canvaselement {
+  width: 50vw;
+  height: 100vw;
   z-index: 2;
+  display: inline-block;
+}
+#canvaselement2 {
+  width: 50vw;
+  height: 100vw;
+  z-index: 2;
+  display: inline-block;
 }
