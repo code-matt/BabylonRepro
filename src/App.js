@@ -1,13 +1,19 @@
 import './App.scss';
 
 import {
-  addGround, initBabylon, animateBox, render
+  addGround, initBabylon, animateBox, render, addMesh, createMaterialPool
 } from './Babylon'
 
 import React, { Component } from 'react';
+import { Animation } from '@babylonjs/core';
 class App extends Component {
 
   componentDidMount() {
+    this.init()
+
+  }
+
+  init = async () => {
     this.scene1stuff = initBabylon('canvaselement')
     this.scene1stuff.camera.attachControl(document.getElementById('canvaselement'), true)
     document.getElementById('canvaselement').focus()
@@ -19,8 +25,17 @@ class App extends Component {
 
     addGround(this.scene1stuff)
     addGround(this.scene2stuff)
-    animateBox(this.scene1stuff)
-    animateBox(this.scene2stuff)
+
+    await createMaterialPool(this.scene1stuff)
+
+    // addMesh(this.scene1stuff)
+    // addMesh(this.scene2stuff)
+
+
+    setInterval(() => {
+      animateBox(this.scene1stuff)
+      animateBox(this.scene2stuff)
+    }, 1000)
   }
 
   runAnimation = (key) => {
