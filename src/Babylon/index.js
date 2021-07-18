@@ -16,6 +16,12 @@ GLTF2.GLTFLoader.RegisterExtension(
     }
 );
 
+SceneLoader.OnPluginActivatedObservable.addOnce(function (loader) {
+    if (loader.name === "gltf") {
+        loader.useSRGBBuffers = false;
+    }
+});
+
 export function initBabylon (canvasId) {
     let canvas, engine, scene, camera
 
