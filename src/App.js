@@ -23,7 +23,7 @@ class App extends Component {
     addGround(this.scene1stuff)
     await createMaterialPool(this.scene1stuff)
 
-    await addMesh(this.scene1stuff, 'lod_level_0/sector_4_1/', new Vector3())
+    await addMesh(this.scene1stuff, 'lod_level_0/sector_5_4/', new Vector3())
     await addMesh(this.scene1stuff, 'lod_level_1/sector_4_4/', new Vector3(-3, 0, 0))
   }
 
