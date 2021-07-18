@@ -8,6 +8,14 @@ import PBRExt from './extension'
 export const materialPool = []
 let pbrMaterial
 
+GLTF2.GLTFLoader.RegisterExtension(
+    "bitreel_pbr_lightbake",
+    function (loader) {
+        loader._parent.validate = false
+        return new PBRExt(loader);
+    }
+);
+
 export function initBabylon (canvasId) {
     let canvas, engine, scene, camera
 
@@ -23,14 +31,6 @@ export function initBabylon (canvasId) {
     window.addEventListener('resize', function(){
         engine.resize();
     });
-
-    GLTF2.GLTFLoader.RegisterExtension(
-        "bitreel_pbr_lightbake",
-        function (loader) {
-            loader._parent.validate = false
-            return new PBRExt(loader);
-        }
-    );
 
     new HemisphericLight("HemiLight", new Vector3(0, 1, 0), scene);
     
@@ -57,14 +57,13 @@ export async function createMaterialPool ({ scene }) {
         materialPool.push(pbrMaterial)
 
         SceneLoader.LoadAssetContainer(
-            "https://portal-external-dev.s3.amazonaws.com/3/3/shells/4/b57ba702-54a5-4d6c-be38-081bb1edbab6/lod_level_5/sector_0_0/",
+            "https://portal-external-dev.s3.amazonaws.com/3/3/shells/4/b57ba702-54a5-4d6c-be38-081bb1edbab6/lod_level_0/sector_4_1/",
             "sector.glb",
             scene,
             async (container) => {
                 pbrMaterial.forceCompilation(container.meshes[1], () => {
                     var clone = pbrMaterial.clone("matclone", true);
                     materialPool.push(clone)
-                    materialPool.push(pbrMaterial)
 
                     container.meshes[1].freezeWorldMatrix();
                     container.meshes[1].doNotSyncBoundingInfo = true;
@@ -79,25 +78,29 @@ export async function createMaterialPool ({ scene }) {
     })
 }
 
-// export function addMesh({scene}) {
-//     const cancelTokenSource = axios.CancelToken.source()
-//     axios.get(`https://portal-external-dev.s3.amazonaws.com/3/3/shells/4/b57ba702-54a5-4d6c-be38-081bb1edbab6/lod_level_5/sector_0_0/sector.glb`, { responseType:'arraybuffer', cancelToken: cancelTokenSource.token})
-//     .then(async res => {
-//         let file = new File([res.data], "sector.glb")
-//         let assetContainer = await SceneLoader.LoadAssetContainerAsync('file:', file, scene)
-//         pbrMaterial.forceCompilation(assetContainer.meshes[1], () => {
-//             var clone = pbrMaterial.clone("matclone", true);
+export function addMesh({scene}) {
+    return new Promise(async (resolve, reject) => {
+        SceneLoader.LoadAssetContainer(
+            "https://portal-external-dev.s3.amazonaws.com/3/3/shells/4/b57ba702-54a5-4d6c-be38-081bb1edbab6/lod_level_1/sector_4_4/",
+            "sector.glb",
+            scene,
+            async (container) => {
+                pbrMaterial.forceCompilation(container.meshes[1], () => {
+                    var clone = pbrMaterial.clone("matclone", true);
+                    materialPool.push(clone)
 
-//             assetContainer.meshes[1].freezeWorldMatrix();
-//             assetContainer.meshes[1].doNotSyncBoundingInfo = true;
-//             assetContainer.meshes[1].cullingStrategy = AbstractMesh.CULLINGSTRATEGY_BOUNDINGSPHERE_ONLY  
-//             assetContainer.meshes[1].disableLighting = true
-//             assetContainer.addAllToScene()
-
-//         })
-//     })
-//     // cancelTokenSource.cancel()
-// }
+                    container.meshes[1].freezeWorldMatrix();
+                    container.meshes[1].doNotSyncBoundingInfo = true;
+                    container.meshes[1].cullingStrategy = AbstractMesh.CULLINGSTRATEGY_BOUNDINGSPHERE_ONLY  
+                    container.meshes[1].disableLighting = true
+                    container.addAllToScene()
+                    container.meshes[1].position.x = -3
+                    resolve(true)
+                })
+            }
+        )
+    })
+}
 
 export function addGround ({ scene }) {
     var groundMaterial = new GridMaterial("groundMaterial", scene);
