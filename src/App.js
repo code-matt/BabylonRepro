@@ -5,7 +5,7 @@ import {
 } from './Babylon'
 
 import React, { Component } from 'react';
-import { Animation } from '@babylonjs/core';
+import { Animation, Vector3 } from '@babylonjs/core';
 class App extends Component {
 
   componentDidMount() {
@@ -23,7 +23,8 @@ class App extends Component {
     addGround(this.scene1stuff)
     await createMaterialPool(this.scene1stuff)
 
-    addMesh(this.scene1stuff)
+    await addMesh(this.scene1stuff, 'lod_level_0/sector_4_1/', new Vector3())
+    await addMesh(this.scene1stuff, 'lod_level_1/sector_4_4/', new Vector3(-3, 0, 0))
   }
 
   runAnimation = (key) => {
@@ -31,18 +32,7 @@ class App extends Component {
   }
 
   render() {
-    return (
-      <div className="App">
-        <div className="buttons-container">
-          <div className="button" onClick={() => this.runAnimation("scene1stuff")}>
-            Animate Left
-          </div>
-          <div className="button" onClick={() => this.runAnimation("scene2stuff")}>
-            Animate Right
-          </div>
-        </div>
-      </div>
-    )
+    return null
   }
 }
 

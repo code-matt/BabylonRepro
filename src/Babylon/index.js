@@ -33,12 +33,9 @@ export function initBabylon (canvasId) {
     });
 
     new HemisphericLight("HemiLight", new Vector3(0, 1, 0), scene);
-    
 
-    let box = Mesh.CreateBox("box", 2, scene, true)
-    let box2 = Mesh.CreateBox("box", 2, scene, true)
 
-    return { canvas, engine, scene, camera, box, box2 }
+    return { canvas, engine, scene, camera }
 }
 
 export function render ({ scene }) {
@@ -55,48 +52,37 @@ export async function createMaterialPool ({ scene }) {
         pbrMaterial.getBlockByName("Roughness Power").value = 1.0
         pbrMaterial.build()
         materialPool.push(pbrMaterial)
-
         SceneLoader.LoadAssetContainer(
             "https://portal-external-dev.s3.amazonaws.com/3/3/shells/4/b57ba702-54a5-4d6c-be38-081bb1edbab6/lod_level_0/sector_4_1/",
             "sector.glb",
             scene,
             async (container) => {
                 pbrMaterial.forceCompilation(container.meshes[1], () => {
-                    var clone = pbrMaterial.clone("matclone", true);
-                    materialPool.push(clone)
-
-                    container.meshes[1].freezeWorldMatrix();
-                    container.meshes[1].doNotSyncBoundingInfo = true;
-                    container.meshes[1].cullingStrategy = AbstractMesh.CULLINGSTRATEGY_BOUNDINGSPHERE_ONLY  
-                    container.meshes[1].disableLighting = true
-                    container.addAllToScene()
+                    for (let i = 0; i < 10; i++) {
+                        var clone = pbrMaterial.clone("mat" + i, true);
+                        materialPool.push(clone)   
+                    }
                     resolve(true)
                 })
             }
         )
-        // https://portal-external-dev.s3.amazonaws.com/2/2/shells/2/a7ceb6be-55cc-4582-add0-cc6f0764c4c3/shell_mat.json
     })
 }
 
-export function addMesh({scene}) {
+export function addMesh({scene}, sector, initialPosition) {
     return new Promise(async (resolve, reject) => {
         SceneLoader.LoadAssetContainer(
-            "https://portal-external-dev.s3.amazonaws.com/3/3/shells/4/b57ba702-54a5-4d6c-be38-081bb1edbab6/lod_level_1/sector_4_4/",
+            "https://portal-external-dev.s3.amazonaws.com/3/3/shells/4/b57ba702-54a5-4d6c-be38-081bb1edbab6/" + sector,
             "sector.glb",
             scene,
             async (container) => {
-                pbrMaterial.forceCompilation(container.meshes[1], () => {
-                    var clone = pbrMaterial.clone("matclone", true);
-                    materialPool.push(clone)
-
-                    container.meshes[1].freezeWorldMatrix();
-                    container.meshes[1].doNotSyncBoundingInfo = true;
-                    container.meshes[1].cullingStrategy = AbstractMesh.CULLINGSTRATEGY_BOUNDINGSPHERE_ONLY  
-                    container.meshes[1].disableLighting = true
-                    container.addAllToScene()
-                    container.meshes[1].position.x = -3
-                    resolve(true)
-                })
+                container.meshes[1].freezeWorldMatrix();
+                container.meshes[1].doNotSyncBoundingInfo = true;
+                container.meshes[1].cullingStrategy = AbstractMesh.CULLINGSTRATEGY_BOUNDINGSPHERE_ONLY  
+                container.meshes[1].disableLighting = true
+                container.addAllToScene()
+                container.meshes[1].position = initialPosition
+                resolve(true)
             }
         )
     })
