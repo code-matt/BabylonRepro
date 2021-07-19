@@ -1,9 +1,10 @@
 import { Scene, Engine, UniversalCamera, Vector3, Color3, Mesh, Animation, SceneLoader, HemisphericLight, AbstractMesh, NodeMaterial } from '@babylonjs/core'
 import { GridMaterial } from '@babylonjs/materials'
 import "@babylonjs/loaders/glTF";
-import axios from 'axios';
 import { GLTF2 } from '@babylonjs/loaders/glTF';
 import PBRExt from './extension'
+import "@babylonjs/core/Debug/debugLayer"
+import "@babylonjs/inspector";
 
 export const materialPool = []
 let pbrMaterial
@@ -15,12 +16,6 @@ GLTF2.GLTFLoader.RegisterExtension(
         return new PBRExt(loader);
     }
 );
-
-SceneLoader.OnPluginActivatedObservable.addOnce(function (loader) {
-    if (loader.name === "gltf") {
-        loader.useSRGBBuffers = false;
-    }
-});
 
 export function initBabylon (canvasId) {
     let canvas, engine, scene, camera
@@ -39,6 +34,12 @@ export function initBabylon (canvasId) {
     });
 
     new HemisphericLight("HemiLight", new Vector3(0, 1, 0), scene);
+
+    SceneLoader.OnPluginActivatedObservable.addOnce(function (loader) {
+        if (loader.name === "gltf") {
+            loader.useSRGBBuffers = false;
+        }
+    });
 
 
     return { canvas, engine, scene, camera }

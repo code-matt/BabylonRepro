@@ -32,7 +32,14 @@ class App extends Component {
   }
 
   render() {
-    return null
+    return <div className="buttons-container">
+      <div className="button" onClick={() => {
+        this.scene1stuff.scene.debugLayer.setAsActiveScene()
+        this.scene1stuff.scene.debugLayer.show({overlay: true})
+      }}>
+        Show Inspector
+      </div>
+    </div>
   }
 }
 
